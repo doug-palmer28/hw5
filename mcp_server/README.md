@@ -8,7 +8,7 @@ Built with [FastMCP](https://gofastmcp.com) (`fastmcp` 4.x). The server file is 
 
 ## Database
 
-- **File:** `../data/campus_customs_new.db` (`Homework 5/data/campus_customs_new.db`). Tests can point it somewhere else with the `CAMPUS_CUSTOMS_DB` environment variable.
+- **File:** `../data/campus_customs_new.db` (`hw5/data/campus_customs_new.db`). Tests can point it somewhere else with the `CAMPUS_CUSTOMS_DB` environment variable.
 - This is our working copy of the original `data/campus_customs.db`. The original is never changed. `python backend/main.py --reset` (or **Reset shop** on the board) copies it back over the working copy.
 - **Original tables:** desk, inventory, pricing, vendors, leases, cash_accounts, payments, invoices, tickets.
 - **Tables the server adds** (created on demand, so they come back after a reset): `case_notes`, `approval_requests`, `customer_drafts`, `stock_reservations`.
@@ -65,27 +65,19 @@ Write tools check that `author` / `requested_by` / `reserved_by` / `updated_by` 
 
 ## Setup
 
-From the `Homework 5` folder:
+Follow the one-time setup in the repo's main `README.md` (create and activate the virtual environment, then `pip install -r requirements.txt`). Then, from the repo root, to start the server over stdio by hand:
 
 ```bash
-python -m venv .venv
+python mcp_server/server.py
 ```
 
-```bash
-.venv/Scripts/python -m pip install fastmcp "pydantic-ai-slim[openai,mcp]" python-dotenv
-```
-
-To start the server over stdio by hand:
-
-```bash
-.venv/Scripts/python mcp_server/server.py
-```
+You normally don't need to: the backend starts it automatically.
 
 ## Who connects to it
 
 - **The agent team:** `backend/main.py` (section 3) launches this server over stdio and gives each agent a filtered view of it.
 - **The backend:** `backend/main.py` (FastAPI) opens the same server when it starts and uses it for every route that reads or changes shop data. Only the backend's approval route calls the `human_` tools, and only when a person clicks.
-- **The coder:** `../.mcp.json` registers it as `campus-customs` for Claude Code opened in `Homework 5`. Approve the server when Claude Code asks. Because the coder is a client too, it can see the `human_` tools. `CLAUDE.md` tells it never to call them.
+- **The coder:** `../.mcp.json` registers it as `campus-customs` for Claude Code opened in the repo root (activate the virtual environment first). Approve the server when Claude Code asks. Because the coder is a client too, it can see the `human_` tools; a coding assistant must never call them, since approving and paying are for the human alone.
 
 ## Tests
 

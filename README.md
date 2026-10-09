@@ -38,18 +38,23 @@ hw5/
 
 ## Requirements
 
-- **Python 3.13** and **Node.js 20+** (built with Node 24)
-- A **Portkey API key** with access to `gpt-6-luna` (only needed for live agent runs)
+- **Python 3.10 or newer** (tested on 3.13 and 3.14)
+- **Node.js 20.19+ or 22.12+** (Vite 8 needs one of these; tested on Node 24). Check with `node --version`.
+- A **Portkey API key** with access to `gpt-6-luna` (only needed for live agent runs). Without one, everything else works; pressing *Run agent team* fails with "PORTKEY_API_KEY is not set".
 
 ## One-time setup
 
-From the repo root:
+From the repo root, create a virtual environment (on macOS/Linux, use `python3` for this one command):
 
 ```bash
 python -m venv .venv
 ```
 
-Activate it. **Windows (PowerShell):** `.venv\Scripts\Activate.ps1` · **macOS/Linux:** `source .venv/bin/activate`
+Activate it:
+- **Windows (PowerShell):** `.venv\Scripts\Activate.ps1`. If PowerShell says running scripts is disabled, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` first, or use Command Prompt: `.venv\Scripts\activate.bat`.
+- **macOS/Linux:** `source .venv/bin/activate`
+
+Once it's active, `python` and `pip` refer to the virtual environment on every OS.
 
 ```bash
 pip install -r requirements.txt
@@ -73,7 +78,10 @@ All commands below assume the virtual environment is **activated** and you're in
 python backend/main.py --reset
 ```
 
-That's the same as copying the file by hand: **Windows:** `copy /Y data\campus_customs.db data\campus_customs_new.db` · **macOS/Linux:** `cp data/campus_customs.db data/campus_customs_new.db`
+That's the same as copying the file by hand:
+- **Windows (PowerShell):** `Copy-Item data\campus_customs.db data\campus_customs_new.db -Force`
+- **Windows (Command Prompt):** `copy /Y data\campus_customs.db data\campus_customs_new.db`
+- **macOS/Linux:** `cp data/campus_customs.db data/campus_customs_new.db`
 
 The audit trail is *not* reset. It's append-only and keeps every run, separated by `db_reset` entries.
 
@@ -86,7 +94,7 @@ python mcp_server/server.py
 ```
 
 - **Test it:** `python mcp_server/server.py --smoke` calls the tools over MCP and writes `output/mcp_smoke.json`.
-- **Use it from Claude Code:** `.mcp.json` registers it as `campus-customs`. It points at `.venv/Scripts/python.exe` (Windows). On macOS/Linux, change `"command"` to `.venv/bin/python`.
+- **Use it from Claude Code:** `.mcp.json` registers it as `campus-customs` (command `python mcp_server/server.py`). Activate the virtual environment *before* starting Claude Code in the repo root, so `python` is the one with `fastmcp` installed.
 
 ## 3. Start the FastAPI backend
 
@@ -109,6 +117,12 @@ npm run dev
 ```
 
 The board opens at **http://localhost:5173** (the backend allows this origin). Keep the backend running; the board shows "Backend offline" if it isn't.
+
+**If port 8000 is already taken** on your machine, start the backend on another port (e.g. `uvicorn main:app --reload --port 8010`) and tell the board where it is when you start it:
+- **macOS/Linux:** `VITE_API_URL=http://localhost:8010 npm run dev`
+- **Windows (PowerShell):** `$env:VITE_API_URL="http://localhost:8010"; npm run dev`
+
+If 5173 is taken, Vite picks the next free port by itself, and the backend accepts any `localhost` port.
 
 ## 5. Reset, then run all three tickets
 

@@ -151,6 +151,8 @@ Here I interruprted the work and then added to it because I clicked on the next 
 
 > push it
 
+> Okay it sounds like there is a fix that needs to happen. cna you fix thi s, and then update what is on GitHub? I appreciate the test that you did to think through what the grader would do,  and I want to remove any possibility that things will not work for the grader on a technicality rather than because of the work that we have done.
+
 
 ### Reflection
 Here we had to do some extra clean up because Claude had a different file structure for the assignment than what was proposed including several different files that were not in the planned strucutre for the assignment. I had Claude go through and move some of the information from the various files into the file structure that the assignment requested. 
