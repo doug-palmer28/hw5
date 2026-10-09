@@ -1,0 +1,23 @@
+# Python environment and caches
+.venv/
+__pycache__/
+*.pyc
+
+# Frontend dependencies and build output
+node_modules/
+dist/
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Secrets: never commit the real key. .env.example (a template, no key) IS committed.
+.env
+.env.*
+!.env.example
+
+# Both databases under data/ ARE committed (the original and the working copy).
+
+# Local development only, not part of the submission's required structure
+tests/
+CLAUDE.md
+data (4).zip

@@ -1,0 +1,100 @@
+/* ------------------------------------------------------------------
+   Little people, drawn in HTML/CSS. Base canvas is 96 x 136 px,
+   scaled with --s. Yale navy outfits; role props layered on top.
+   ------------------------------------------------------------------ */
+.fig { width: calc(96px * var(--s)); height: calc(136px * var(--s)); position: relative; flex: none; }
+.fig-inner {
+  position: absolute; left: 0; top: 0; width: 96px; height: 136px;
+  transform: scale(var(--s)); transform-origin: top left;
+  --outfit: #00366b; --pants: #2a2f3a;
+}
+.fig-inner > div { position: absolute; }
+
+.fig-shadow { left: 18px; bottom: -4px; width: 60px; height: 8px; border-radius: 50%; background: rgba(0,0,0,.14); }
+.fig-leg { bottom: 2px; width: 14px; height: 30px; background: var(--pants); border-radius: 3px 3px 2px 2px; }
+.fig-leg::after { content: ""; position: absolute; bottom: -2px; left: -2px; width: 18px; height: 6px; background: #151515; border-radius: 4px 4px 2px 2px; }
+.fig-leg-l { left: 31px; } .fig-leg-r { left: 51px; }
+.fig-body { left: 20px; top: 62px; width: 56px; height: 48px; background: var(--outfit); border-radius: 16px 16px 6px 6px; }
+.fig-y { position: absolute; left: 0; right: 0; top: 13px; text-align: center; color: #fff; font: 700 17px Georgia, "Times New Roman", serif; }
+.fig-arm { top: 66px; width: 13px; height: 38px; background: var(--outfit); border-radius: 7px; }
+.fig-arm::after { content: ""; position: absolute; bottom: -5px; left: 0; width: 13px; height: 12px; border-radius: 50%; background: var(--skin); }
+.fig-arm-l { left: 10px; transform: rotate(8deg); } .fig-arm-r { right: 10px; transform: rotate(-8deg); }
+.fig-neck { left: 42px; top: 54px; width: 12px; height: 10px; background: var(--skin); }
+.fig-head { left: 26px; top: 14px; width: 44px; height: 46px; border-radius: 50%; background: var(--skin); }
+.fig-eye { position: absolute; top: 21px; width: 5px; height: 6px; border-radius: 50%; background: #1d1d1d; }
+.fig-eye-l { left: 12px; } .fig-eye-r { right: 12px; }
+.fig-mouth { position: absolute; left: 15px; top: 31px; width: 14px; height: 7px; border-bottom: 2.5px solid #6a3b2a; border-radius: 0 0 10px 10px; }
+.fig-hair { left: 24px; top: 10px; width: 48px; height: 19px; background: var(--hair); border-radius: 24px 24px 6px 6px; }
+
+/* states */
+.fig-working .fig-inner { animation: fig-bob 0.9s ease-in-out infinite; }
+.fig-working .fig-arm-r { animation: fig-wave 0.9s ease-in-out infinite; transform-origin: top center; }
+.fig-idle { filter: grayscale(.55); opacity: .6; }
+.fig-badge {
+  right: 4px; top: 4px; width: 22px; height: 22px; background: #00366b; color: #fff; font: 700 13px/22px "Open Sans", Arial;
+  text-align: center; box-shadow: 0 0 0 2px #fff;
+}
+.fig-badge-bad { background: #f04f36; }
+@keyframes fig-bob { 0%,100% { transform: scale(var(--s)) translateY(0); } 50% { transform: scale(var(--s)) translateY(-5px); } }
+@keyframes fig-wave { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(-28deg); } }
+@media (prefers-reduced-motion: reduce) { .fig-working .fig-inner, .fig-working .fig-arm-r { animation: none; } }
+
+/* ---- Boss: navy blazer, white shirt, Yale-blue tie, pocket square ---- */
+.fig-boss .fig-inner { --outfit: #0b2545; }
+.fig-boss .fig-y { display: none; }
+.acc-shirt { left: 38px; top: 62px; width: 20px; height: 22px; background: #fff; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.acc-tie { left: 44px; top: 64px; width: 8px; height: 30px; background: #286dc0; clip-path: polygon(15% 0, 85% 0, 100% 80%, 50% 100%, 0 80%); }
+.acc-pocket { left: 26px; top: 72px; width: 9px; height: 5px; background: #fff; clip-path: polygon(0 100%, 30% 0, 60% 60%, 100% 0, 100% 100%); }
+.fig-boss .fig-hair { height: 15px; top: 11px; }
+
+/* ---- Inventory: Yale cap, hoodie strings, carries a stock box ---- */
+.fig-inventory .fig-inner { --outfit: #00366b; }
+.acc-cap { left: 24px; top: 6px; width: 48px; height: 22px; background: #00366b; border-radius: 24px 24px 3px 3px; }
+.acc-cap span { position: absolute; left: 0; right: 0; top: 2px; text-align: center; color: #fff; font: 700 12px Georgia, serif; }
+.acc-brim { left: 54px; top: 22px; width: 30px; height: 6px; background: #00264d; border-radius: 0 6px 6px 0; }
+.acc-strings { left: 41px; top: 64px; width: 14px; height: 14px; border-left: 2px solid #fff; border-right: 2px solid #fff; }
+.fig-inventory .fig-y { display: none; }
+.acc-box {
+  left: 24px; top: 82px; width: 48px; height: 30px; background: #c8a165; border: 2px solid #a37f45;
+  background-image: linear-gradient(90deg, transparent 20px, #e8d3a5 20px, #e8d3a5 26px, transparent 26px);
+}
+.fig-inventory .fig-arm { top: 70px; height: 30px; }
+.fig-inventory .fig-arm-l { transform: rotate(-24deg); } .fig-inventory .fig-arm-r { transform: rotate(24deg); }
+.fig-inventory.fig-working .fig-arm-r { animation: none; }
+
+/* ---- Accounting: green visor, round glasses, teal sweater vest, calculator ---- */
+.fig-accounting .fig-inner { --outfit: #046e82; }
+.acc-visor { left: 22px; top: 16px; width: 52px; height: 10px; background: rgba(46, 160, 87, .85); border-radius: 3px; box-shadow: 0 3px 0 -1px rgba(30, 110, 60, .9); }
+.acc-glasses { left: 34px; top: 31px; width: 28px; height: 11px; }
+.acc-glasses::before, .acc-glasses::after { content: ""; position: absolute; top: 0; width: 9px; height: 9px; border: 2px solid #1d1d1d; border-radius: 50%; }
+.acc-glasses::before { left: 0; } .acc-glasses::after { right: 0; }
+.acc-collar { left: 38px; top: 62px; width: 20px; height: 12px; background: #fff; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.acc-calc { right: 4px; top: 94px; width: 16px; height: 20px; background: #3b3b3b; border: 2px solid #1d1d1d; }
+.acc-calc::before { content: ""; position: absolute; left: 2px; top: 2px; right: 2px; height: 5px; background: #b9e6c9; }
+
+/* ---- Facilities: white hard hat with Y, Yale-blue work shirt, tool belt + wrench ---- */
+.fig-facilities .fig-inner { --outfit: #286dc0; }
+.acc-hardhat { left: 23px; top: 4px; width: 50px; height: 24px; background: #fafafa; border: 2px solid #c9c9c9; border-radius: 26px 26px 2px 2px; }
+.acc-hardhat span { position: absolute; left: 0; right: 0; top: 2px; text-align: center; color: #00366b; font: 700 13px Georgia, serif; }
+.acc-hatbrim { left: 17px; top: 25px; width: 62px; height: 5px; background: #e6e6e6; border-radius: 3px; }
+.fig-facilities .fig-hair { display: none; }
+.acc-belt { left: 20px; top: 98px; width: 56px; height: 8px; background: #7a4a22; }
+.acc-pouch { left: 22px; top: 100px; width: 15px; height: 15px; background: #8b5a2b; border: 2px solid #6b4220; }
+.acc-wrench { left: 62px; top: 102px; width: 5px; height: 20px; background: #8d99a6; border-radius: 2px; }
+.acc-wrench::before { content: ""; position: absolute; left: -4px; bottom: -6px; width: 13px; height: 9px; border: 3px solid #8d99a6; border-top-color: transparent; border-radius: 50%; }
+.fig-facilities .fig-y { top: 8px; }
+
+/* ---- Customer service: headset with mic, Yale polo, "HI!" name tag ---- */
+.fig-customer_service .fig-inner { --outfit: #335e89; }
+.acc-headband { left: 22px; top: 7px; width: 52px; height: 36px; border: 4px solid #1d1d1d; border-bottom: 0; border-radius: 30px 30px 0 0; }
+.acc-ear { left: 18px; top: 30px; width: 11px; height: 15px; background: #1d1d1d; border-radius: 4px; box-shadow: 49px 0 0 #1d1d1d; }
+.acc-mic { left: 24px; top: 46px; width: 18px; height: 3px; background: #1d1d1d; transform: rotate(-12deg); border-radius: 2px; }
+.acc-polo { left: 40px; top: 62px; width: 16px; height: 9px; background: #fff; clip-path: polygon(0 0, 100% 0, 75% 100%, 50% 45%, 25% 100%); }
+.acc-tag { left: 50px; top: 80px; width: 22px; height: 12px; background: #fff; color: #f04f36; font: 800 8px/12px "Open Sans", Arial; text-align: center; border: 1px solid #ddd; }
+.fig-customer_service .fig-y { left: -16px; top: 15px; font-size: 14px; }
+
+/* ---- You (Doug): Yale hoodie ---- */
+.fig-human .fig-inner { --outfit: #00366b; }
+.acc-hood { left: 30px; top: 56px; width: 36px; height: 12px; background: #002a54; border-radius: 0 0 18px 18px; }
+.acc-yale { left: 20px; top: 78px; width: 56px; text-align: center; color: #fff; font: 800 11px/1 "Open Sans", Arial; letter-spacing: 1px; }
+.fig-human .fig-y { display: none; }

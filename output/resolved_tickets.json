@@ -1,0 +1,101 @@
+{
+  "session": {
+    "description": "Problem 9 live session: the three open tickets worked by the agent team on gpt-6-luna, started and approved by Doug from the React board.",
+    "model": "gpt-6-luna",
+    "shop_date": "2026-08-31",
+    "database": "data/campus_customs_new.db (reset to the original values right before the session)",
+    "started_utc": "2026-10-09T02:09:25+00:00",
+    "finished_utc": "2026-10-09T02:16:20+00:00",
+    "audit_trail": {
+      "file": "output/audit_trail.json",
+      "reset_marker_seq": 431,
+      "session_seq_range": [432, 565],
+      "hash_chain_verified": true
+    },
+    "runs": [
+      {"run_id": "run-d19ef57e", "ticket_id": 101, "kind": "first_pass", "result": "waiting_on_human"},
+      {"run_id": "run-d605bdc3", "ticket_id": 101, "kind": "follow_up", "result": "waiting_on_vendor"},
+      {"run_id": "run-da77af4c", "ticket_id": 102, "kind": "first_pass", "result": "waiting_on_human"},
+      {"run_id": "run-ec2f05b5", "ticket_id": 102, "kind": "follow_up", "result": "resolved"},
+      {"run_id": "run-419b6db5", "ticket_id": 103, "kind": "first_pass", "result": "waiting_on_human"},
+      {"run_id": "run-64cdb130", "ticket_id": 103, "kind": "follow_up", "result": "in_progress"}
+    ]
+  },
+  "tickets": [
+    {
+      "ticket_id": 101,
+      "type": "customer_order",
+      "requester": "Tauhid Zaman",
+      "request": "1 x Classic Bulldog Tee (CC-TEE-WHITE), size S",
+      "final_status": "waiting_on_vendor",
+      "short_outcome": "Size S was out of stock (0 on hand) and the reprint on invoice 501 could not ship until paid. Doug approved the $840 invoice and it was paid on 2026-08-31, starting Bulldog Print Co's 5-day lead time. The tee is expected 2026-09-05; the customer has an honest draft update. The shop date never advances in the simulation, so the ticket correctly rests at waiting_on_vendor.",
+      "cash_change": -840.0,
+      "agents": {
+        "boss": "Read the ticket, cash position, and queue; delegated inventory and accounting together, then customer service; after Doug's approval had inventory confirm the restock date and customer service update the draft; set status waiting_on_human, then waiting_on_vendor.",
+        "inventory": "Found 0 size S on hand (shortfall 1); confirmed invoice 501 is the size-S reprint, unpaid and 3 days overdue; after payment confirmed expected arrival 2026-09-05; did not reserve stock because nothing was on the shelf.",
+        "accounting": "Checked the $3,400 balance against rent due 2026-09-02; filed payment request #1 for $840, noting rent plus the invoice leaves $160.",
+        "customer_service": "Draft #1 told Tauhid size S is out and no date can be promised while the invoice is unpaid; draft #2 (after payment) gives Sept 5 as an estimate, not a guarantee. Neither was sent.",
+        "facilities": "Not used (no lease or space involved)."
+      },
+      "human_approvals": [
+        {"request_id": 1, "kind": "payment", "what": "Pay invoice 501, Bulldog Print Co rush reprint", "amount": 840.0, "decision": "approved", "approved_by": "Doug", "payment_id": 1, "paid_at": "2026-08-31", "checking_after": 2560.0}
+      ],
+      "drafts": [1, 2]
+    },
+    {
+      "ticket_id": 102,
+      "type": "rent_notice",
+      "requester": "Elm City Properties",
+      "request": "Shop rent due in 2 days (lease 1)",
+      "final_status": "resolved",
+      "short_outcome": "Facilities verified the email against lease 1 (Elm City Properties, Chapel Street shop, $2,400, due 2026-09-02, 2 days out, nothing yet paid). Accounting requested payment; Doug approved and $2,400 was paid on 2026-08-31, before the due date. Ticket resolved.",
+      "cash_change": -2400.0,
+      "agents": {
+        "boss": "Read the ticket, cash, and queue; delegated facilities and accounting together; after Doug's approval had both confirm the payment; set waiting_on_human, then resolved.",
+        "facilities": "Verified landlord, space, amount, and due date against lease 1 and that no rent payment or request already existed; after payment confirmed payment #2 satisfies the notice.",
+        "accounting": "Confirmed $2,400 due 2026-09-02 against $2,560 in checking; filed payment request #2; after payment confirmed $160 remains.",
+        "inventory": "Not used (no product involved).",
+        "customer_service": "Not used; the boss judged no landlord message was needed."
+      },
+      "human_approvals": [
+        {"request_id": 2, "kind": "payment", "what": "Pay rent on lease 1 (Chapel Street shop)", "amount": 2400.0, "decision": "approved", "approved_by": "Doug", "payment_id": 2, "paid_at": "2026-08-31", "checking_after": 160.0}
+      ],
+      "drafts": []
+    },
+    {
+      "ticket_id": 103,
+      "type": "price_override",
+      "requester": "Yale AI Club",
+      "request": "20 x Basic Hoodie Big Yale (CC-HOOD-NAVY), size M, at a bulk discount",
+      "final_status": "in_progress",
+      "short_outcome": "Doug started this ticket with instructions: \"See if we have enough and if we can afford to this one. We are running low on cash.\" Inventory found only 8 of 20 size M on hand (short 12, no restock on file). Accounting proposed 15% off, $49.30 each ($27.30 above the $22 cost), filed as price override #3 for 20 units ($986), and flagged that buying 12 more at $22 cost (~$264) is more than the $160 left. Doug approved the price (no money moved). Customer service drafted a reply giving the approved price and asking the club whether to keep checking for all 20 or revise the quantity. The ticket waits on the club.",
+      "cash_change": 0.0,
+      "agents": {
+        "boss": "Passed Doug's instructions on; delegated inventory first, then accounting and customer service together with inventory's count; after Doug's approval sent all three back to act on it; set waiting_on_human, then in_progress.",
+        "inventory": "Found 8 size M on hand (S 4, L 14, XL 6), a 12-unit shortfall, no linked restock invoice; Bulldog Print Co can reprint apparel in 5 days but nothing is ordered; did not reserve stock.",
+        "accounting": "Tested prices with quote_price, recommended 15% off at $49.30 and filed price override #3 (20 x $49.30 = $986 vs $1,160 at list); warned the $160 balance cannot fund a 12-unit restock; after approval noted it is a price concession, not a payment.",
+        "customer_service": "Draft #3 offered the 8 in stock with no discount promised; draft #4 (after approval) states $49.30 each and asks the club to confirm quantity. Neither was sent.",
+        "facilities": "Not used (no lease or space involved)."
+      },
+      "human_instructions": [
+        {"to": "boss", "text": "See if we have enough and if we can afford to this one. We are running low on cash."}
+      ],
+      "human_approvals": [
+        {"request_id": 3, "kind": "price_override", "what": "Sell 20 navy hoodies (size M) at $49.30 each (15% off $58 list)", "amount": 986.0, "decision": "approved", "approved_by": "Doug", "money_moved": false}
+      ],
+      "drafts": [3, 4]
+    }
+  ],
+  "cash": {
+    "starting_checking_balance": 3400.0,
+    "changes": [
+      {"ticket_id": 101, "change": -840.0, "why": "Invoice 501, Bulldog Print Co rush reprint of the size-S tee (payment #1, approved by Doug)", "balance_after": 2560.0},
+      {"ticket_id": 102, "change": -2400.0, "why": "Rent on lease 1, Chapel Street shop, due 2026-09-02 (payment #2, approved by Doug)", "balance_after": 160.0},
+      {"ticket_id": 103, "change": 0.0, "why": "Price override only; no money moves and no income is recorded in the simulation", "balance_after": 160.0}
+    ],
+    "total_paid_out": 3240.0,
+    "ending_checking_balance": 160.0,
+    "cash_accounts_row_in_working_db": {"name": "checking", "balance": 160.0, "date": "2026-08-31"},
+    "matches_working_db": true
+  }
+}
